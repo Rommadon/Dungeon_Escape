@@ -36,6 +36,10 @@ class DungeonEscape(arcade.Window):
     # Set up the player info
     self.player_sprite = None
 
+    self.monster_list = None
+
+    self.monster_sprite = None
+
 
   def setup(self):
     # Sprite lists
@@ -47,11 +51,20 @@ class DungeonEscape(arcade.Window):
     self.player_sprite.center_y = 50
     self.player_list.append(self.player_sprite)
 
+    self.monster_list = arcade.SpriteList()
+
+    # Set up the player
+    self.monster_sprite = Player("images/monster.png", 0.2)
+    self.monster_sprite.center_x = 500
+    self.monster_sprite.center_y = 400
+    self.monster_list.append(self.monster_sprite)
+
     arcade.set_background_color(arcade.color.REDWOOD)
 
   def on_draw(self):
     arcade.start_render()
     self.player_list.draw()
+    self.monster_list.draw()
 
   def update(self, delta_time):
     self.player_list.update()
