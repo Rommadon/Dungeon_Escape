@@ -36,6 +36,7 @@ class MyGame(arcade.Window):
         self.wall_list = None
         self.enemy_list = None
         self.player_list = None
+        self.trophy_list = None
 
         # Set up the player
         self.player_sprite = None
@@ -51,6 +52,7 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.SpriteList()
         self.enemy_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
+        self.trophy_list = arcade.SpriteList()
 
         # Draw the walls on the bottom
         for x in range(0, SCREEN_WIDTH, SPRITE_SIZE):
@@ -75,6 +77,21 @@ class MyGame(arcade.Window):
           wall.left = x
           self.wall_list.append(wall)
 
+              
+        for x in range(SPRITE_SIZE * 6, SPRITE_SIZE* 8, SPRITE_SIZE):
+          wall = arcade.Sprite("images/wall.png", SPRITE_SCALING)
+
+          wall.bottom = SPRITE_SIZE * 1
+          wall.left = x
+          self.wall_list.append(wall)
+
+        for x in range(SPRITE_SIZE * 8, SPRITE_SIZE* 9, SPRITE_SIZE):
+          wall = arcade.Sprite("images/wall.png", SPRITE_SCALING)
+
+          wall.bottom = SPRITE_SIZE * 2
+          wall.left = x
+          self.wall_list.append(wall)
+
         # -- Draw an enemy on the ground
         enemy = arcade.Sprite("images/monster.png", 0.2)
 
@@ -84,7 +101,7 @@ class MyGame(arcade.Window):
         # Set enemy initial speed
         enemy.boundary_right = SPRITE_SIZE * 3.5
         enemy.boundary_left = SPRITE_SIZE * 2
-        enemy.change_x = 1
+        enemy.change_x = 2
         self.enemy_list.append(enemy)
 
         # -- Draw a enemy on the platform
@@ -96,8 +113,40 @@ class MyGame(arcade.Window):
         # Set boundaries on the left/right the enemy can't cross
         enemy.boundary_right = SPRITE_SIZE * 6
         enemy.boundary_left = SPRITE_SIZE * 3
-        enemy.change_x = 1
+        enemy.change_x = 3
         self.enemy_list.append(enemy)
+
+
+        # -- Draw a enemy on the platform
+        enemy = arcade.Sprite("images/monster.png", 0.2)
+
+        enemy.bottom = SPRITE_SIZE * 1.5
+        enemy.left = SPRITE_SIZE * 6
+
+        # Set boundaries on the left/right the enemy can't cross
+        enemy.boundary_right = SPRITE_SIZE * 7.5
+        enemy.boundary_left = SPRITE_SIZE * 6
+        enemy.change_x = 3
+        self.enemy_list.append(enemy)
+
+                # -- Draw a enemy on the platform
+        enemy = arcade.Sprite("images/monster.png", 0.2)
+
+        enemy.bottom = SPRITE_SIZE * 0.5
+        enemy.left = SPRITE_SIZE * 1
+
+        # Set boundaries on the left/right the enemy can't cross
+        enemy.boundary_right = SPRITE_SIZE * 6
+        enemy.boundary_left = SPRITE_SIZE * 0.5
+        enemy.change_x = 4
+        self.enemy_list.append(enemy)
+
+        # Trophy
+        trophy = arcade.Sprite("images/trophy.png", 2)
+
+        trophy.bottom = SPRITE_SIZE * 2.5
+        trophy.left = SPRITE_SIZE * 8
+        self.trophy_list.append(trophy)
 
         # -- Set up the player
         self.player_sprite = arcade.Sprite("images/player.png", SPRITE_SCALING)
@@ -120,6 +169,7 @@ class MyGame(arcade.Window):
         self.player_list.draw()
         self.wall_list.draw()
         self.enemy_list.draw()
+        self.trophy_list.draw()
 
 
     def on_key_press(self, key, modifiers):
@@ -133,6 +183,7 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = MOVEMENT_SPEED
+            
 
     def on_key_release(self, key, modifiers):
         """
@@ -158,6 +209,9 @@ class MyGame(arcade.Window):
             self.physics_engine.update()
 
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:
+                self.game_over = True
+
+            if len(arcade.check_for_collision_with_list(self.player_sprite, self.trophy_list)) > 0:
                 self.game_over = True
 
 
