@@ -5,7 +5,7 @@ SPRITE_SCALING = 1
 SPRITE_NATIVE_SIZE = 128
 SPRITE_SIZE = int(SPRITE_NATIVE_SIZE * SPRITE_SCALING)
 
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 1400
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Dungeon Escape"
 
@@ -61,33 +61,42 @@ class MyGame(arcade.Window):
             self.wall_list.append(wall)
 
         # Draw the platform
-        for x in range(SPRITE_SIZE * 2, SPRITE_SIZE* 4, SPRITE_SIZE):
+        for x in range(SPRITE_SIZE * 3, SPRITE_SIZE* 6, SPRITE_SIZE):
             wall = arcade.Sprite("images/wall.png", SPRITE_SCALING)
 
             wall.bottom = SPRITE_SIZE * 2
             wall.left = x
             self.wall_list.append(wall)
+      
+        for x in range(SPRITE_SIZE * 2, SPRITE_SIZE* 4, SPRITE_SIZE):
+          wall = arcade.Sprite("images/wall.png", SPRITE_SCALING)
+
+          wall.bottom = SPRITE_SIZE * 1
+          wall.left = x
+          self.wall_list.append(wall)
 
         # -- Draw an enemy on the ground
         enemy = arcade.Sprite("images/monster.png", 0.2)
 
-        enemy.bottom = SPRITE_SIZE
+        enemy.bottom = SPRITE_SIZE * 1.5
         enemy.left = SPRITE_SIZE * 2
 
         # Set enemy initial speed
-        enemy.change_x = 2
+        enemy.boundary_right = SPRITE_SIZE * 3.5
+        enemy.boundary_left = SPRITE_SIZE * 2
+        enemy.change_x = 1
         self.enemy_list.append(enemy)
 
         # -- Draw a enemy on the platform
         enemy = arcade.Sprite("images/monster.png", 0.2)
 
         enemy.bottom = SPRITE_SIZE * 2.5
-        enemy.left = SPRITE_SIZE * 2
+        enemy.left = SPRITE_SIZE * 4
 
         # Set boundaries on the left/right the enemy can't cross
-        enemy.boundary_right = SPRITE_SIZE * 3.5
-        enemy.boundary_left = SPRITE_SIZE * 2
-        enemy.change_x = 2
+        enemy.boundary_right = SPRITE_SIZE * 6
+        enemy.boundary_left = SPRITE_SIZE * 3
+        enemy.change_x = 1
         self.enemy_list.append(enemy)
 
         # -- Set up the player
