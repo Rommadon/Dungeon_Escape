@@ -183,6 +183,9 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = MOVEMENT_SPEED
+        elif key == arcade.key.SPACE:
+            self.game_over = False
+            self.setup()
             
 
     def on_key_release(self, key, modifiers):
@@ -213,8 +216,6 @@ class MyGame(arcade.Window):
 
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.trophy_list)) > 0:
                 self.game_over = True
-
-
 
 def main():
     window = MyGame()
