@@ -44,6 +44,7 @@ class MyGame(arcade.Window):
         self.view_left = 0
         self.view_bottom = 0
         self.game_over = False
+        self.winner = False
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -153,7 +154,7 @@ class MyGame(arcade.Window):
         self.player_list.append(self.player_sprite)
 
         # Starting position of the player
-        self.player_sprite.center_x = 64
+        self.player_sprite.center_x = 70
         self.player_sprite.center_y = 270
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
@@ -166,11 +167,17 @@ class MyGame(arcade.Window):
     def on_draw(self):
         arcade.start_render()
 
-        self.player_list.draw()
-        self.wall_list.draw()
-        self.enemy_list.draw()
-        self.trophy_list.draw()
+        if not self.game_over:
+          self.player_list.draw()
+          self.wall_list.draw()
+          self.enemy_list.draw()
+          self.trophy_list.draw()
 
+        if self.winner:
+          arcade.draw_text("You are Winner", 700, 300, arcade.color.BLACK, 12)
+
+        if self.game_over:
+          arcade.draw_text("You died", 700, 300, arcade.color.BLACK, 12)
 
     def on_key_press(self, key, modifiers):
         """
@@ -214,8 +221,12 @@ class MyGame(arcade.Window):
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.enemy_list)) > 0:
                 self.game_over = True
 
+            if self.player_sprite.center_y < 0:
+                self.game_over = True
+
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.trophy_list)) > 0:
                 self.game_over = True
+                self.winner = True
 
 def main():
     window = MyGame()
