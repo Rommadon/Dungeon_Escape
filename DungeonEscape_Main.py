@@ -46,9 +46,12 @@ class MyGame(arcade.Window):
         self.physics_engine = None
         self.view_left = 0
         self.view_bottom = 0
+
+        #Set up state
         self.game_over = False
         self.go_to_stage_2 = False
         self.winner = False
+        self.start = True
 
     def setup(self):
         """ Set up the game and initialize the variables. """
@@ -203,7 +206,7 @@ class MyGame(arcade.Window):
           # Set enemy initial speed
           enemy.boundary_right = SPRITE_SIZE * 3.5
           enemy.boundary_left = SPRITE_SIZE * 2
-          enemy.change_x = 2
+          enemy.change_x = 4
           self.enemy_list.append(enemy)
 
           # -- Draw a enemy on the platform
@@ -215,7 +218,7 @@ class MyGame(arcade.Window):
           # Set boundaries on the left/right the enemy can't cross
           enemy.boundary_right = SPRITE_SIZE * 6
           enemy.boundary_left = SPRITE_SIZE * 3
-          enemy.change_x = 3
+          enemy.change_x = 4
           self.enemy_list.append(enemy)
 
 
@@ -228,7 +231,7 @@ class MyGame(arcade.Window):
           # Set boundaries on the left/right the enemy can't cross
           enemy.boundary_right = SPRITE_SIZE * 7.5
           enemy.boundary_left = SPRITE_SIZE * 6
-          enemy.change_x = 3
+          enemy.change_x = 4
           self.enemy_list.append(enemy)
 
           # -- Draw a enemy on the platform
@@ -263,7 +266,7 @@ class MyGame(arcade.Window):
 
           # Set boundaries on the left/right the enemy can't cross
           enemy.boundary_right = SPRITE_SIZE * 3
-          enemy.boundary_left = SPRITE_SIZE * 0.5
+          enemy.boundary_left = SPRITE_SIZE * 1
           enemy.change_x = 4
           self.enemy_list.append(enemy)
 
@@ -286,7 +289,7 @@ class MyGame(arcade.Window):
           # Set boundaries on the left/right the enemy can't cross
           enemy.boundary_right = SPRITE_SIZE * 9
           enemy.boundary_left = SPRITE_SIZE * 7
-          enemy.change_x = 2
+          enemy.change_x = 4
           self.enemy_list.append(enemy)
 
           
@@ -333,8 +336,12 @@ class MyGame(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
+        
+        if self.start:
+          arcade.draw_text("Dungeon Escape", 375, 400, arcade.color.WHITE, 50)
+          arcade.draw_text("Press Enter To Start", 550, 350, arcade.color.WHITE, 12)
 
-        if not self.game_over and not self.winner:
+        if not self.game_over and not self.winner and not self.start:
           self.player_list.draw()
           self.wall_list.draw()
           self.enemy_list.draw()
@@ -343,11 +350,11 @@ class MyGame(arcade.Window):
 
         if self.winner:
           arcade.draw_text("You Winner", 470, 400, arcade.color.YELLOW, 50)
-          arcade.draw_text("Press spacebar to try again kid", 525, 350, arcade.color.WHITE, 12)
+          arcade.draw_text("Press spacebar To Try Again Kid", 525, 350, arcade.color.WHITE, 12)
           
         if self.game_over:
           arcade.draw_text("You died", 500, 400, arcade.color.RED, 50)
-          arcade.draw_text("Press spacebar to try again kid", 525, 350, arcade.color.WHITE, 12)
+          arcade.draw_text("Press Spacebar To Try Again Kid", 520, 350, arcade.color.WHITE, 12)
 
     def on_key_press(self, key, modifiers):
         """
@@ -364,6 +371,9 @@ class MyGame(arcade.Window):
             self.game_over = False
             self.go_to_stage_2 = False
             self.winner = False
+            self.setup()
+        elif key == arcade.key.ENTER:
+            self.start = False
             self.setup()
             
 
